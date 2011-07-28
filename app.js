@@ -33,6 +33,8 @@ var router = require('./router');
 router.addPath('get', '/', 'page#index');
 router.addPath('get', '/index(\.:format)?', 'page#index');
 router.addPath('get', '/show(\.:format)?', 'page#show');
+router.addPath('get', '/test/index(\.:format)?', 'test#index');
+router.addPath('get', '/test/show(\.:format)?', 'test#show');
 router.init(app);
 app.listen(3000);
 

@@ -3,9 +3,21 @@ var routes = [];
 exports.init = function(app) {
   for (var i in routes){
     controller = routes[i].controller;
-    console.log(routes[i].route);
     for (var j in routes[i].paths){
-      app[routes[i].paths[j].type](routes[i].paths[j].route, require('./controllers/'+controller+'_controller')[routes[i].paths[j].action]);
+      var bc = require('./base_controller');
+      var c = require('./controllers/'+controller+'_controller');
+      c.__proto__ = bc;
+      var path = routes[i].paths[j];
+
+      callback = (function(req, res) {
+        var action = path.action;
+        var cont = c;
+        return function(req, res) {
+            cont[action](req, res);
+        }
+      })();
+
+      app[path.type](path.route, callback);
     }
   }
   return this;
